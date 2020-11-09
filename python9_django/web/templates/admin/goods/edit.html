@@ -1,0 +1,126 @@
+{% extends 'admin/public/base.html' %}
+
+ {% block con-header %}
+<div class="container-fluid am-cf">
+    <div class="row">
+        <div class="am-u-sm-12 am-u-md-12 am-u-lg-9">
+            <div class="page-header-heading">
+                <span class="am-icon-user page-header-heading-icon">
+                </span>
+                 商品资料修改
+            <p class="page-header-description">修改过后会重新保存资料,请谨慎修改!</p>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+{% block con-body %}
+<div class="row-content am-cf">
+    <div class="am-u-sm-12 am-u-md-12 am-u-lg-12">
+        <div class="widget am-cf">
+            <div class="widget-head am-cf">
+                <div class="widget-title am-fl">资料修改表单</div>
+                <div class="widget-function am-fr">
+                    <a href="javascript:;" class="am-icon-cog"></a>
+                </div>
+            </div>
+            <div class="widget-body am-fr">
+
+                <form action="{% url 'good_update' %}" method="post" enctype="multipart/form-data" class="am-form tpl-form-border-form tpl-form-border-br">
+                    <div class="am-form-group">
+                        <label for="user-name" class="am-u-sm-3 am-form-label">商品标题 </label>
+                        <div class="am-u-sm-9">
+                            <input type="text" name = 'title' value = '{{ uinfo.title }}' class="tpl-form-input" id="user-name" placeholder="请输入用户名">
+                        </div>
+                    </div>
+
+                    <div class="am-form-group">
+                        <label for="user-name" class="am-u-sm-3 am-form-label">商品价格 </label>
+                        <div class="am-u-sm-9">
+                            <input type="text" name = 'price' value = '{{ uinfo.price}}' class="tpl-form-input" id="user-name" placeholder="请输入密码">
+                        </div>
+                    </div>
+
+                    <div class="am-form-group">
+                        <label for="user-name" class="am-u-sm-3 am-form-label">库存 </label>
+                        <div class="am-u-sm-9">
+                            <input type="text" name = 'storage' value = '{{ uinfo.storage }}' class="tpl-form-input" id="user-name" placeholder="请输入邮箱">
+                        </div>
+                    </div>
+                
+                    <div class="am-form-group">
+                        <label for="user-weibo" class="am-u-sm-3 am-form-label">商品头像 </label>
+                        <div class="am-u-sm-9">
+                            <div class="am-form-group am-form-file">
+                                <div class="tpl-form-file-img">
+                                    <img id="doc_from_imag" src="{{ uinfo.pic }}" alt="" width="100px">
+                                </div>
+                                <button type="button" class="am-btn am-btn-danger am-btn-sm">
+                                    <i class="am-icon-cloud-upload"></i> 修改商品图片
+                                </button>
+                                <input id="doc-form-file" type="file" name="pic" multiple="">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="am-form-group">
+                        <link rel="stylesheet" type="text/css" href="/ueditor/UE/third-party/SyntaxHighlighter/shCoreDefault.css">
+                        <script type="text/javascript" src="/ueditor/UE/third-party/SyntaxHighlighter/shCore.js"></script>
+                        <script type="text/javascript" src="/ueditor/UE/ueditor.config.js"></script>
+                        <script type="text/javascript" src="/ueditor/UE/ueditor.all.min.js"></script>
+                        <script type="text/javascript" src="/ueditor/UE/lang/zh-cn/zh-cn.js"></script>
+
+
+                        <div class="am-form-group">
+                            <label for="user-name" class="am-u-sm-3 am-form-label">
+                                商品详情
+                            </label>
+                            <div class="am-u-sm-9">
+                                <!-- <textarea name="descr" class="" rows="10" id="user-intro" placeholder="请输入商品简介"></textarea> -->
+                                <!-- <script id="editor" type="text/plain" style="width:100%;height:500px;"></script> -->
+                                <script id="editor" name="info" type="text/plain" style="height:500px;">{{ uinfo.info|safe}}</script>
+                            </div>
+                        </div>
+
+
+                        <script type="text/javascript">
+                            var ue = UE.getEditor('editor');
+                            SyntaxHighlighter.all();
+                        </script>
+                    </div>
+
+                    {% csrf_token %}
+                    <input type="hidden" name="id" value="{{ uinfo.id }}">
+                    <div class="am-form-group">
+                        <div class="am-u-sm-9 am-u-sm-push-3">
+                        <button class="am-btn am-btn-primary tpl-btn-bg-color-success ">提交</button></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+// 实时头像预览 实现
+    $(function () {
+        picupload()
+    });
+
+    function picupload() {
+        $('#doc-form-file').change(function () {
+            var obj = $(this)[0].files[0];
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#doc_from_imag').attr('src',this.result)
+            }
+            reader.readAsDataURL(obj);
+        })
+    }
+
+
+</script>  
+
+{% endblock %}
